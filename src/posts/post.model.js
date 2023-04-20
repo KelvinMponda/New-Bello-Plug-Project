@@ -13,4 +13,4 @@ class Post {
     }
 }
 
-module.exports = { Post }
+module.exports = { post }

@@ -10,9 +10,22 @@ const dbConnection = require('./src/utils/mysql.connector')
 
 const { Post } = require('./src/posts/post.model')
 
-// app.get('/api/v1', function (req, res) {
-//     return res.json(req.headers)
-// })
+
+//Update existing post
+app.patch('/api/v1/posts/:id', function(request, response) {
+    /* console.log(request.body, request.params) */
+    //get id from request, use id to select a post from db, update post and end request
+    const sql = `SELECT * FROM posts WHERE id=${request.params.id} LIMIT 1`
+
+
+    return dbConnection.query(sql, function(err, rows) {
+        if (err) throw err
+
+        return response.json(rows)
+    })
+})
+
+//Delete existing post
 
 app.get('/api/v1/posts', function(req, res) {
     var sql2 = "SElECT * FROM posts"
@@ -42,15 +55,15 @@ app.post('/api/v1/posts', function(req, res) {
 
 app.listen(3000, function() {
     console.log('Bello-Plug listening on port 3000')
-    let sql = "INSERT INTO posts (name, imageUrl, summary) VALUES ('kelvin', 'New_pic', 'yodyela')";
-    dbConnection.query(sql, function(err) {
+        /* let sql = "INSERT INTO posts (name, imageUrl, summary) VALUES ('Mponda', 'GettyImages.com', 'quality pictures')";
+        dbConnection.query(sql, function(err) {
+            if (err) throw err
+            console.log("One record inserted")
+        }) */
+
+    dbConnection.connect(function(err) {
         if (err) throw err
-        console.log("One record inserted")
+
+        console.log("Connected to MySQL")
     })
-
-    //dbConnection.connect(function(err) {
-    //if (err) throw err
-
-    //console.log("Connected to MySQL")
-    //})
 })
